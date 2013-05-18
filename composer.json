@@ -1,0 +1,14 @@
+{
+    "name": "mead_steve/behationary",
+    "description": "Description page for behat contexts",
+    "minimum-stability": "dev",
+    "authors": [
+        {
+            "name": "Steve B",
+            "email": "meadsteve@gmail.com"
+        }
+    ],
+    "require": {
+        "behat/behat": "v2.4.5"
+    }
+}
