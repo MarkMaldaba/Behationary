@@ -28,6 +28,11 @@ class Behationary {
         return $this;
     }
 
+    public function addContexts(array $contexts) {
+        array_walk($contexts, array($this, 'addContext'));
+        return $this;
+    }
+
     public function addIndexedContext(IndexedContext $indexedContext) {
         $this->contexts[] = $indexedContext;
         return $this;
@@ -39,6 +44,9 @@ class Behationary {
             $byMethod = $indexedContext->getFileRawSentences();
             foreach($byMethod as $methodName => $sentences) {
                 foreach($sentences as $sentence) {
+                    $sentence = $this->stepPrettyfier->makeStepPretty(
+                        $sentence
+                    );
                     $arr[$sentence] = $indexedContext->getClassName()
                                     . "::"
                                     . $methodName;

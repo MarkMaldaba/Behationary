@@ -17,19 +17,32 @@ class BehationaryTest
 
     public function setUp()
     {
+        $this->setupTestObject();
+    }
+
+    protected function setupTestObject($doPrettyStatements = false)
+    {
         new StepPrettyfier();
         $this->mockPrettyfier = $this->getMock(
             'MeadSteve\Behationary\StepPrettyfier',
-            null
+            array('makeStepPretty')
         );
-        $this->mockPrettyfier
-             ->expects($this->any())
-             ->method("makeStepPretty")
-             ->will($this->returnArgument(0));
+        if ($doPrettyStatements) {
+            $this->mockPrettyfier
+                ->expects($this->any())
+                ->method("makeStepPretty")
+                ->will($this->returnValue("PrettyPlaceHolder"));
+        }
+        else {
+            $this->mockPrettyfier
+                ->expects($this->any())
+                ->method("makeStepPretty")
+                ->will($this->returnArgument(0));
+        }
+
         $this->testedBehationary = new Behationary(
             $this->mockPrettyfier
         );
-
     }
 
     public function testGetAllSteps_ReturnsEmptyArrayWhenEmpty() {
@@ -55,6 +68,17 @@ class BehationaryTest
         $arr = $this->testedBehationary->getAllSteps();
 
         $this->assertArrayHasKey('^I call method One$', $arr);
+    }
+
+    public function testGetAllSteps_ContainsPrettyfiedIndexes() {
+        $this->setupTestObject(true);
+        $mockData = array(
+            'MethodOne' => array('^I call method One$')
+        );
+        $this->loadMockData($mockData);
+        $arr = $this->testedBehationary->getAllSteps();
+
+        $this->assertArrayHasKey('PrettyPlaceHolder', $arr);
     }
 
     public function testGetAllSteps_ContainsFullMethodName() {
