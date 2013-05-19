@@ -42,16 +42,35 @@ class Behationary {
         $arr = array();
         foreach($this->contexts as $indexedContext) {
             $byMethod = $indexedContext->getFileRawSentences();
-            foreach($byMethod as $methodName => $sentences) {
-                foreach($sentences as $sentence) {
-                    $sentence = $this->stepPrettyfier->makeStepPretty(
-                        $sentence
-                    );
-                    $arr[$sentence] = $indexedContext->getClassName()
-                                    . "::"
-                                    . $methodName;
-                }
+            $arr = $this->addAllMethods($arr, $byMethod, $indexedContext);
+        }
+        return $arr;
+    }
+
+    protected function addSentencesToArr($arr, $fullVariableName, $sentences)
+    {
+        foreach ($sentences as $baseSentence) {
+            $mappedSentences = $this->stepPrettyfier->makeStepPretty(
+                $baseSentence
+            );
+            foreach ($mappedSentences as $singleSentance) {
+                $arr[$singleSentance] = $fullVariableName;
             }
+        }
+        return $arr;
+    }
+
+    protected function addAllMethods($arr, $byMethod, $indexedContext)
+    {
+        foreach ($byMethod as $methodName => $sentences) {
+            $fullVariableName = $indexedContext->getClassName()
+                . "::"
+                . $methodName;
+            $arr = $this->addSentencesToArr(
+                $arr,
+                $fullVariableName,
+                $sentences
+            );
         }
         return $arr;
     }

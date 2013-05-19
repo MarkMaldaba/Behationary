@@ -5,38 +5,45 @@ class StepPrettyfier
 {
     public function makeStepPretty($step)
     {
-        $step = $this->removeAnchors($step);
-        $step = $this->addNamedVariablePlaceHolders($step);
-        $step = $this->addVariablePlaceHolders($step);
-        return $step;
+        $steps = $this->removeAnchors(array($step));
+        $steps = $this->addNamedVariablePlaceHolders($steps);
+        $steps = $this->addVariablePlaceHolders($steps);
+        return $steps;
     }
 
-    protected function removeAnchors($step)
+    protected function removeAnchors($steps)
     {
-        if (mb_substr ($step, 0, 1) == "^") {
-            $step = mb_substr ($step, 1);
+        foreach($steps as $key => $step) {
+            if (mb_substr ($steps[$key], 0, 1) == "^") {
+                $steps[$key] = mb_substr($steps[$key], 1);
+            }
+            if (mb_substr($steps[$key], -1, 1) == "$") {
+                $steps[$key] = mb_substr($steps[$key],
+                                         0,
+                                         mb_strlen($steps[$key]) - 1);
+            }
         }
-        if (mb_substr($step, -1, 1) == "$") {
-            $step = mb_substr($step, 0, mb_strlen($step) - 1);
-        }
-        return $step;
+        return $steps;
     }
 
-    protected function addNamedVariablePlaceHolders($step)
+    protected function addNamedVariablePlaceHolders($steps)
     {
-        $step = preg_replace_callback(
-            '#"\(\?P<(.+?)>.+\)"#',
-            function($match) {
-                return '"' . $match[1] . '"';
-            },
-            $step
-        );
-        //$step = preg_replace('#"\((\?P<groupName)>.+\)"#', '"something"', $step);
-        return $step;
+        foreach($steps as $key => $step) {
+            $steps[$key] = preg_replace_callback(
+                '#"\(\?P<(.+?)>.+\)"#',
+                function($match) {
+                    return '"' . $match[1] . '"';
+                },
+                $step
+            );
+        }
+        return $steps;
     }
-    protected function addVariablePlaceHolders($step)
+    protected function addVariablePlaceHolders($steps)
     {
-        $step = preg_replace('#"\(.+?\)"#', '"something"', $step);
-        return $step;
+        foreach($steps as $key => $step) {
+            $steps[$key] = preg_replace('#"\(.+?\)"#', '"something"', $step);
+        }
+        return $steps;
     }
 }

@@ -16,12 +16,13 @@ class StepPrettyfierTest
         $this->testedPrettyfier = new StepPrettyfier();
     }
 
-    public function testMakeStepPretty_ReturnsString()
+    public function testMakeStepPretty_ReturnsStringArray()
     {
         $result = $this->testedPrettyfier->makeStepPretty(
             "something"
         );
-        $this->assertInternalType("string", $result);
+        $this->assertInternalType("array", $result);
+        $this->assertContainsOnly("string", $result, true);
     }
 
     public function testMakeStepPretty_RemovesStartAndEndMatchers()
@@ -29,7 +30,7 @@ class StepPrettyfierTest
         $result = $this->testedPrettyfier->makeStepPretty(
             '^the method does a thing$'
         );
-        $this->assertEquals('the method does a thing', $result);
+        $this->assertContains('the method does a thing', $result);
     }
 
     public function testMakeStepPretty_AddsVariablePlaceHolders()
@@ -37,7 +38,7 @@ class StepPrettyfierTest
         $result = $this->testedPrettyfier->makeStepPretty(
             'the method takes argument "([^"])"'
         );
-        $this->assertEquals('the method takes argument "something"', $result);
+        $this->assertContains('the method takes argument "something"', $result);
     }
 
     public function testMakeStepPretty_AddsVariablePlaceHoldersFor2Args()
@@ -45,7 +46,7 @@ class StepPrettyfierTest
         $result = $this->testedPrettyfier->makeStepPretty(
             'the method takes argument "([^"])" and "([^"])"'
         );
-        $this->assertEquals(
+        $this->assertContains(
             'the method takes argument "something" and "something"',
             $result
         );
@@ -56,7 +57,7 @@ class StepPrettyfierTest
         $result = $this->testedPrettyfier->makeStepPretty(
             'the method takes argument "(?P<groupName>[^"])"'
         );
-        $this->assertEquals('the method takes argument "groupName"', $result);
+        $this->assertContains('the method takes argument "groupName"', $result);
     }
 
     public function testMakeStepPretty_HandlesEverythingTogether()
@@ -64,6 +65,6 @@ class StepPrettyfierTest
         $result = $this->testedPrettyfier->makeStepPretty(
             '^the method takes argument "([^"])"$'
         );
-        $this->assertEquals('the method takes argument "something"', $result);
+        $this->assertContains('the method takes argument "something"', $result);
     }
 }

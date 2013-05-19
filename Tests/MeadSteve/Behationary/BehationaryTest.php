@@ -31,13 +31,15 @@ class BehationaryTest
             $this->mockPrettyfier
                 ->expects($this->any())
                 ->method("makeStepPretty")
-                ->will($this->returnValue("PrettyPlaceHolder"));
+                ->will($this->returnValue(array("PrettyPlaceHolder")));
         }
         else {
             $this->mockPrettyfier
                 ->expects($this->any())
                 ->method("makeStepPretty")
-                ->will($this->returnArgument(0));
+                ->will($this->returnCallback(function($calledWith) {
+                    return array($calledWith);
+                }));
         }
 
         $this->testedBehationary = new Behationary(
