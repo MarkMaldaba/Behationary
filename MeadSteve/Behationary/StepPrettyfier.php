@@ -50,23 +50,23 @@ class StepPrettyfier
         while($repeatLoop) {
             $repeatLoop = false;
             foreach($steps as $key => $step) {
-                $newStep = preg_replace_callback(
-                    '#\(\?:\|(.+?)\)#',
-                    function($matches)
-                    {
-                        return $matches[1];
-                    },
+                $matches = array();
+                preg_match(
+                    '#\(\?:(?P<options>(.*?)(\|(.*?))*)\)#s',
                     $step,
-                    1
+                    $matches
                 );
-                if ($newStep != $step) {
-                    $steps[$key] = preg_replace(
-                        '#\(\?:\|(.+?)\)#',
-                        "",
-                        $step,
-                        1
-                    );
-                    $steps[] = $newStep;
+                if (isset($matches['options'])) {
+                    unset($steps[$key]);
+                    $options = explode("|", $matches['options']);
+                    foreach($options as $option) {
+                        $steps[] = preg_replace(
+                            '#\(\?:(.*?)(?:\|(.*?))*\)#s',
+                            $option,
+                            $step,
+                            1
+                        );
+                    }
                     $repeatLoop = true;
                 }
             }

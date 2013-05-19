@@ -69,6 +69,25 @@ class StepPrettyfierTest
         $this->assertContains('method takes argument', $result);
     }
 
+    public function testMakeStepPretty_SplitsForSwitchGroups()
+    {
+        $result = $this->testedPrettyfier->makeStepPretty(
+            '(?:be|benot) that is the question'
+        );
+        $this->assertContains('be that is the question', $result);
+        $this->assertContains('benot that is the question', $result);
+    }
+
+    public function testMakeStepPretty_SplitsForTripleSwitchGroups()
+    {
+        $result = $this->testedPrettyfier->makeStepPretty(
+            '(?:be|benot|something) that is the question'
+        );
+        $this->assertContains('be that is the question', $result);
+        $this->assertContains('benot that is the question', $result);
+        $this->assertContains('something that is the question', $result);
+    }
+
     public function testMakeStepPretty_HandlesEverythingTogether()
     {
         $result = $this->testedPrettyfier->makeStepPretty(
