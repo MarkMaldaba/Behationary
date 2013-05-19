@@ -5,25 +5,22 @@ class StepPrettyfier
 {
     public function makeStepPretty($step)
     {
-        $steps = $this->removeAnchors(array($step));
+        $step = $this->removeAnchors($step);
+        $steps = $this->splitForOptional(array($step));
         $steps = $this->addNamedVariablePlaceHolders($steps);
         $steps = $this->addVariablePlaceHolders($steps);
-        return $steps;
+        return array_map(array($this, 'tidyStep'), $steps);
     }
 
-    protected function removeAnchors($steps)
+    protected function removeAnchors($step)
     {
-        foreach($steps as $key => $step) {
-            if (mb_substr ($steps[$key], 0, 1) == "^") {
-                $steps[$key] = mb_substr($steps[$key], 1);
-            }
-            if (mb_substr($steps[$key], -1, 1) == "$") {
-                $steps[$key] = mb_substr($steps[$key],
-                                         0,
-                                         mb_strlen($steps[$key]) - 1);
-            }
+        if (mb_substr ($step, 0, 1) == "^") {
+            $step = mb_substr($step, 1);
         }
-        return $steps;
+        if (mb_substr($step, -1, 1) == "$") {
+            $step = mb_substr($step, 0, mb_strlen($step) - 1);
+        }
+        return $step;
     }
 
     protected function addNamedVariablePlaceHolders($steps)
@@ -45,5 +42,40 @@ class StepPrettyfier
             $steps[$key] = preg_replace('#"\(.+?\)"#', '"something"', $step);
         }
         return $steps;
+    }
+
+    protected function splitForOptional($steps)
+    {
+        $repeatLoop = true;
+        while($repeatLoop) {
+            $repeatLoop = false;
+            foreach($steps as $key => $step) {
+                $newStep = preg_replace_callback(
+                    '#\(\?:\|(.+?)\)#',
+                    function($matches)
+                    {
+                        return $matches[1];
+                    },
+                    $step,
+                    1
+                );
+                if ($newStep != $step) {
+                    $steps[$key] = preg_replace(
+                        '#\(\?:\|(.+?)\)#',
+                        "",
+                        $step,
+                        1
+                    );
+                    $steps[] = $newStep;
+                    $repeatLoop = true;
+                }
+            }
+        }
+        return $steps;
+    }
+
+    protected function tidyStep($step)
+    {
+        return rtrim(ltrim($step));
     }
 }

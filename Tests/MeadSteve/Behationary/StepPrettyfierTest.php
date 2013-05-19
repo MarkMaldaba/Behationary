@@ -60,6 +60,15 @@ class StepPrettyfierTest
         $this->assertContains('the method takes argument "groupName"', $result);
     }
 
+    public function testMakeStepPretty_SplitsForOptionalGroups()
+    {
+        $result = $this->testedPrettyfier->makeStepPretty(
+            '(?:|the) method takes argument'
+        );
+        $this->assertContains('the method takes argument', $result);
+        $this->assertContains('method takes argument', $result);
+    }
+
     public function testMakeStepPretty_HandlesEverythingTogether()
     {
         $result = $this->testedPrettyfier->makeStepPretty(
