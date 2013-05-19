@@ -57,7 +57,12 @@ echo $app->run($request);
 
 function getStepFilterer($searchTerm) {
     return function($stepData) use ($searchTerm) {
-        return (strpos($stepData['step'], $searchTerm) !== false);
+        return (
+            strpos(
+                strtolower($stepData['step']),
+                strtolower($searchTerm)
+            ) !== false
+        );
     };
 }
 
