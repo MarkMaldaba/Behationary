@@ -52,5 +52,14 @@ class IndexedContextTest
         $this->assertContainsOnly("array", $actualSentences, true);
     }
 
+    function testGetClassName_ReturnsCorrectName()
+    {
+        $name = $this->testIndexedContext->getClassName();
+        $this->assertEquals(
+            'MeadSteve\Behationary\Tests\FakeContext',
+            $name
+        );
+    }
+
 
 }

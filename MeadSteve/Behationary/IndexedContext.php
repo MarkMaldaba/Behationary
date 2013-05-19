@@ -6,6 +6,10 @@ use Behat\Behat\Context\BehatContext;
 class IndexedContext
 {
     protected $indexedContext;
+    /**
+     * @var \ReflectionClass
+     */
+    protected $reflector;
 
     protected $sentenceRegex
         = '#@(Then|When|Given)[ ]*\/(?<sentence>[^@\/]*)\/#';
@@ -13,12 +17,14 @@ class IndexedContext
     function __construct(BehatContext $indexedContext)
     {
         $this->indexedContext = $indexedContext;
+        $this->reflector = new \ReflectionClass(
+            $this->indexedContext
+        );
     }
 
     public function getFileMethods()
     {
-        $reflector = new \ReflectionClass($this->indexedContext);
-        return $reflector->getMethods();
+        return $this->reflector->getMethods();
     }
 
     public function getMethodComments()
@@ -64,6 +70,10 @@ class IndexedContext
         );
 
         return $methodSentences;
+    }
+
+    public function getClassName() {
+        return $this->reflector->getName();
     }
 
     protected function filterPublic(\ReflectionMethod $method)
