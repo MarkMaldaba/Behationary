@@ -196,6 +196,17 @@ AddDefaultCharset utf-8
 # ##############################################################################
 
 # ------------------------------------------------------------------------------
+# | Map api/ to api.php?u=                                                             |
+# ------------------------------------------------------------------------------
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  # Reroute any incoming requestst that is not an existing directory or file
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteRule ^api/(.*)$ /api.php?u=$1 [L,QSA]
+</IfModule>
+
+# ------------------------------------------------------------------------------
 # | Rewrite engine                                                             |
 # ------------------------------------------------------------------------------
 
