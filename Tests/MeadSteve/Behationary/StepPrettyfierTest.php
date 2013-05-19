@@ -40,6 +40,17 @@ class StepPrettyfierTest
         $this->assertEquals('the method takes argument "something"', $result);
     }
 
+    public function testMakeStepPretty_AddsVariablePlaceHoldersFor2Args()
+    {
+        $result = $this->testedPrettyfier->makeStepPretty(
+            'the method takes argument "([^"])" and "([^"])"'
+        );
+        $this->assertEquals(
+            'the method takes argument "something" and "something"',
+            $result
+        );
+    }
+
     public function testMakeStepPretty_PreserveGroupNames()
     {
         $result = $this->testedPrettyfier->makeStepPretty(

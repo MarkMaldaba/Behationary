@@ -25,7 +25,7 @@ class StepPrettyfier
     protected function addNamedVariablePlaceHolders($step)
     {
         $step = preg_replace_callback(
-            '#"\(\?P<(.+)>.+\)"#',
+            '#"\(\?P<(.+?)>.+\)"#',
             function($match) {
                 return '"' . $match[1] . '"';
             },
@@ -36,7 +36,7 @@ class StepPrettyfier
     }
     protected function addVariablePlaceHolders($step)
     {
-        $step = preg_replace('#"\(.+\)"#', '"something"', $step);
+        $step = preg_replace('#"\(.+?\)"#', '"something"', $step);
         return $step;
     }
 }
