@@ -29,16 +29,16 @@ $app->path('steps', function($request) use($app) {
         $app->get(function() use ($behationary, $request) {
             $searchTerm = $request->query('term', "");
             $steps = $behationary->getAllSteps();
+            $steps = getJsonReadySteps($steps);
             if ($searchTerm !== "") {
-                $steps = array_flip($steps);
-                $steps = array_filter(
+                $steps = array_values(array_filter(
                     $steps,
                     getStepFilterer($searchTerm)
-                );
-                return getJsonReadySteps(array_flip($steps));
+                ));
+                return $steps;
             }
             else {
-                return getJsonReadySteps($steps);
+                return $steps;
             }
         });
     });
@@ -56,8 +56,8 @@ $app->on('Exception',
 echo $app->run($request);
 
 function getStepFilterer($searchTerm) {
-    return function($step) use ($searchTerm) {
-        return (strpos($step, $searchTerm) !== false);
+    return function($stepData) use ($searchTerm) {
+        return (strpos($stepData['step'], $searchTerm) !== false);
     };
 }
 
