@@ -1,3 +1,5 @@
 .idea
-vendor/
+/vendor/
 composer.lock
+.htaccess
+config.php
