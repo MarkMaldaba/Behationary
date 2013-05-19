@@ -6,6 +6,7 @@ class StepPrettyfier
     public function makeStepPretty($step)
     {
         $step = $this->removeAnchors($step);
+        $step = $this->addNamedVariablePlaceHolders($step);
         $step = $this->addVariablePlaceHolders($step);
         return $step;
     }
@@ -21,6 +22,18 @@ class StepPrettyfier
         return $step;
     }
 
+    protected function addNamedVariablePlaceHolders($step)
+    {
+        $step = preg_replace_callback(
+            '#"\(\?P<(.+)>.+\)"#',
+            function($match) {
+                return '"' . $match[1] . '"';
+            },
+            $step
+        );
+        //$step = preg_replace('#"\((\?P<groupName)>.+\)"#', '"something"', $step);
+        return $step;
+    }
     protected function addVariablePlaceHolders($step)
     {
         $step = preg_replace('#"\(.+\)"#', '"something"', $step);

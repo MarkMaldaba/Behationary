@@ -40,6 +40,14 @@ class StepPrettyfierTest
         $this->assertEquals('the method takes argument "something"', $result);
     }
 
+    public function testMakeStepPretty_PreserveGroupNames()
+    {
+        $result = $this->testedPrettyfier->makeStepPretty(
+            'the method takes argument "(?P<groupName>[^"])"'
+        );
+        $this->assertEquals('the method takes argument "groupName"', $result);
+    }
+
     public function testMakeStepPretty_HandlesEverythingTogether()
     {
         $result = $this->testedPrettyfier->makeStepPretty(
