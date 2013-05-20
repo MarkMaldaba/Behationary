@@ -12,6 +12,7 @@ function MainViewModel() {
     };
 
     var highlightFilterTerm = function highlightFilterTerm(inString) {
+        inString = escapeHtml(inString);
         var searchTerm = self.filterTerm();
         if (searchTerm !== "") {
             // Wrap in a span with styling.
@@ -45,3 +46,19 @@ function MainViewModel() {
     filterList("");
 }
 ko.applyBindings(new MainViewModel());
+
+// HTML escaper taken from mustache.js
+var entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': '&quot;',
+    "'": '&#39;',
+    "/": '&#x2F;'
+};
+
+function escapeHtml(string) {
+    return String(string).replace(/[&<>"'\/]/g, function (s) {
+      return entityMap[s];
+    });
+}
