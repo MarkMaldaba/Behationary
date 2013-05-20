@@ -14,11 +14,9 @@ function MainViewModel() {
     var highlightFilterTerm = function highlightFilterTerm(inString) {
         var searchTerm = self.filterTerm();
         if (searchTerm !== "") {
-            var filterTermRegex = new RegExp(searchTerm, 'gi');
-            inString = inString.replace(
-                filterTermRegex,
-                '<span class="highlightedSearchTerm">' + searchTerm + '</span>'
-            );
+            // Wrap in a span with styling.
+            inString = inString.split(searchTerm)
+                               .join('<span class="highlightedSearchTerm">' + searchTerm + '</span>')
         }
         return inString;
     };
