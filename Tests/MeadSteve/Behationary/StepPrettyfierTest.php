@@ -52,6 +52,17 @@ class StepPrettyfierTest
         );
     }
 
+    public function testMakeStepPretty_AddsVariablePlaceHoldersFor2NamedArgs()
+    {
+        $result = $this->testedPrettyfier->makeStepPretty(
+            'select the "(?P<Option>[^"]*)" option for "(?P<Choice>[^"]*)"'
+        );
+        $this->assertContains(
+            'select the "Option" option for "Choice"',
+            $result
+        );
+    }
+
     public function testMakeStepPretty_PreserveGroupNames()
     {
         $result = $this->testedPrettyfier->makeStepPretty(

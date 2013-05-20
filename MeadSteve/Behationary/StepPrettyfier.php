@@ -27,7 +27,7 @@ class StepPrettyfier
     {
         foreach($steps as $key => $step) {
             $steps[$key] = preg_replace_callback(
-                '#"\(\?P<(.+?)>.+\)"#',
+                '#"\(\?P<(.+?)>.+?\)"#',
                 function($match) {
                     return '"' . $match[1] . '"';
                 },
