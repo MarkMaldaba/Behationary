@@ -11,6 +11,18 @@ function MainViewModel() {
         });
     };
 
+    var highlightFilterTerm = function highlightFilterTerm(inString) {
+        var searchTerm = self.filterTerm();
+        if (searchTerm !== "") {
+            var filterTermRegex = new RegExp(searchTerm, 'gi');
+            inString = inString.replace(
+                filterTermRegex,
+                '<span class="highlightedSearchTerm">' + searchTerm + '</span>'
+            );
+        }
+        return inString;
+    };
+
     // Editable data
     self.filterTerm = ko.observable("");
     self.filterTerm.subscribe(function(newValue) {
@@ -23,8 +35,9 @@ function MainViewModel() {
     self.formattedSteps = ko.computed(function() {
         var formattedSteps = [];
         jQuery.each(self.steps(), function(index, stepData) {
+            var searchTerm = self.filterTerm();
             formattedSteps.push({
-                step:   stepData.step,
+                step:   highlightFilterTerm(stepData.step),
                 method: stepData.method + "()"
             })
         });
