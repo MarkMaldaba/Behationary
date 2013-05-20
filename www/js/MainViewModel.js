@@ -16,12 +16,13 @@ function MainViewModel() {
     self.filterTerm.subscribe(function(newValue) {
         filterList(newValue);
     });
+
     self.steps = ko.observableArray([]);
 
     // Computed Data
     self.formattedSteps = ko.computed(function() {
         var formattedSteps = [];
-        jQuery.each(self.steps, function(index, stepData) {
+        jQuery.each(self.steps(), function(index, stepData) {
             formattedSteps.push({
                 step:   stepData.step,
                 method: stepData.method + "()"
