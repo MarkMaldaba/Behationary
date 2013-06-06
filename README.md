@@ -19,6 +19,7 @@ function getContexts() {
  // todo: Add all the feature contexts to this array
   return array(
 		new \FeatureContext(array()),
+		"AnotherFeatureContext"
 	);
 }
 ```
