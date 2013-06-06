@@ -60,10 +60,16 @@ class Behationary {
         return $arr;
     }
 
+    /**
+     * @param array $arr
+     * @param array $byMethod
+     * @param IndexedContext $indexedContext
+     * @return mixed
+     */
     protected function addAllMethods($arr, $byMethod, $indexedContext)
     {
         foreach ($byMethod as $methodName => $sentences) {
-            $fullVariableName = $indexedContext->getClassName()
+            $fullVariableName = $indexedContext->getClassName($methodName)
                 . "::"
                 . $methodName;
             $arr = $this->addSentencesToArr(

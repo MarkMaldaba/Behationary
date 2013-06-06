@@ -72,8 +72,19 @@ class IndexedContext
         return $methodSentences;
     }
 
-    public function getClassName() {
-        return $this->reflector->getName();
+    /**
+     * @param string $forMethodName (Optional) If the method name is given the
+     *                              declaring class will be returned.
+     * @return string
+     */
+    public function getClassName($forMethodName = null) {
+        if ($forMethodName === null) {
+            return $this->reflector->getName();
+        }
+        else {
+            $method = $this->reflector->getMethod($forMethodName);
+            return $method->getDeclaringClass()->getName();
+        }
     }
 
     protected function filterPublic(\ReflectionMethod $method)
