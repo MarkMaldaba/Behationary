@@ -23,7 +23,11 @@ class Behationary {
         $this->stepPrettyfier = $stepPrettyfier;
     }
 
-    public function addContext(BehatContext $context) {
+    /**
+     * @param BehatContext|string $context
+     * @return $this
+     */
+    public function addContext($context) {
         $this->addIndexedContext(new IndexedContext($context));
         return $this;
     }

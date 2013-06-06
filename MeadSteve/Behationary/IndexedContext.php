@@ -14,12 +14,23 @@ class IndexedContext
     protected $sentenceRegex
         = '#@(Then|When|Given)[ ]*\/(?<sentence>[^@\/]*)\/#';
 
-    function __construct(BehatContext $indexedContext)
+    /**
+     * @param $indexedContext
+     * @throws \InvalidArgumentException
+     */
+    function __construct($indexedContext)
     {
-        $this->indexedContext = $indexedContext;
-        $this->reflector = new \ReflectionClass(
-            $this->indexedContext
-        );
+        if ($indexedContext instanceof BehatContext || is_string($indexedContext)) {
+            $this->indexedContext = $indexedContext;
+            $this->reflector = new \ReflectionClass(
+                $this->indexedContext
+            );
+        }
+        else {
+            throw new \InvalidArgumentException(
+                '$indexedContext should be a string or BehatContext instance'
+            );
+        }
     }
 
     public function getFileMethods()
