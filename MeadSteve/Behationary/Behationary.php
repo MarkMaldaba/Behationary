@@ -51,14 +51,14 @@ class Behationary {
         return $arr;
     }
 
-    protected function addSentencesToArr($arr, $fullVariableName, $sentences)
+    protected function addSentencesToArr($arr, $sentenceData, $sentences)
     {
         foreach ($sentences as $baseSentence) {
             $mappedSentences = $this->stepPrettyfier->makeStepPretty(
                 $baseSentence
             );
             foreach ($mappedSentences as $singleSentance) {
-                $arr[$singleSentance] = $fullVariableName;
+                $arr[$singleSentance] = $sentenceData;
             }
         }
         return $arr;
@@ -73,12 +73,13 @@ class Behationary {
     protected function addAllMethods($arr, $byMethod, $indexedContext)
     {
         foreach ($byMethod as $methodName => $sentences) {
-            $fullVariableName = $indexedContext->getClassName($methodName)
+            $data['fullVariableName'] = $indexedContext->getClassName($methodName)
                 . "::"
                 . $methodName;
+            $data['lineNumber'] = $indexedContext->getLineNumber($methodName);
             $arr = $this->addSentencesToArr(
                 $arr,
-                $fullVariableName,
+                $data,
                 $sentences
             );
         }

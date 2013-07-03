@@ -98,6 +98,15 @@ class IndexedContext
         }
     }
 
+    /**
+     * @param string $forMethodName
+     * @return int
+     */
+    public function getLineNumber($forMethodName) {
+        $method = $this->reflector->getMethod($forMethodName);
+        return $method->getStartLine();
+    }
+
     protected function filterPublic(\ReflectionMethod $method)
     {
         return $method->isPublic();

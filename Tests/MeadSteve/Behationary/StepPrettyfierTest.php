@@ -99,6 +99,14 @@ class StepPrettyfierTest
         $this->assertContains('something that is the question', $result);
     }
 
+    public function testMakeStepPretty_HandlesComplicatedRegexes() {
+        $result = $this->testedPrettyfier->makeStepPretty(
+            'This something is weird: "(..?[\/\\]..?[\/\\]...?.?)"'
+        );
+        $this->assertContains('This something is weird: "something"', $result);
+        $this->assertCount(1, $result);
+    }
+
     public function testMakeStepPretty_HandlesEverythingTogether()
     {
         $result = $this->testedPrettyfier->makeStepPretty(

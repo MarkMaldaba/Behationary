@@ -36,14 +36,15 @@ function MainViewModel() {
         jQuery.each(self.steps(), function(index, stepData) {
             var searchTerm = self.filterTerm();
             formattedSteps.push({
-                step:   highlightFilterTerm(stepData.step),
-                method: stepData.method + "()"
+                step:       highlightFilterTerm(stepData.step),
+                method:     stepData.method.fullVariableName + "()",
+                lineNumber: stepData.method.lineNumber
             })
         });
         return formattedSteps;
     });
 
-    filterList("");
+    filterList(self.filterTerm());
 }
 ko.applyBindings(new MainViewModel());
 

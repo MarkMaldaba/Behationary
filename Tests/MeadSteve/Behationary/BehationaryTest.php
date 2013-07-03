@@ -58,7 +58,7 @@ class BehationaryTest
         );
         $this->loadMockData($mockData);
         $arr = $this->testedBehationary->getAllSteps();
-        $this->assertContainsOnly("string", $arr, true);
+        $this->assertContainsOnly("array", $arr, true);
         $this->assertCount(1, $arr);
     }
 
@@ -90,15 +90,30 @@ class BehationaryTest
         $this->loadMockData($mockData);
         $arr = $this->testedBehationary->getAllSteps();
 
-        $this->assertContains('ClassName::MethodOne', $arr);
+        $item = array_pop($arr);
+
+        $this->assertEquals('ClassName::MethodOne', $item['fullVariableName']);
+    }
+
+    public function testGetAllSteps_ContainsLineNumber() {
+        $mockData = array(
+            'MethodOne' => array('^I call method One$')
+        );
+        $this->loadMockData($mockData);
+        $arr = $this->testedBehationary->getAllSteps();
+
+        $item = array_pop($arr);
+
+        $this->assertEquals(1, $item['lineNumber']);
     }
 
     protected function loadMockData($mockData,
-                                    $className = "ClassName")
+                                    $className = "ClassName",
+                                    $lineNumber = 1)
     {
         $mockContext = $this->getMock(
             'MeadSteve\Behationary\IndexedContext',
-            array('getFileRawSentences', 'getClassName'),
+            array('getFileRawSentences', 'getClassName', 'getLineNumber'),
             array(),
             'MockContext',
             false
@@ -109,6 +124,9 @@ class BehationaryTest
         $mockContext->expects($this->any())
             ->method('getClassName')
             ->will($this->returnValue($className));
+        $mockContext->expects($this->any())
+            ->method('getLineNumber')
+            ->will($this->returnValue($lineNumber));
 
         $this->testedBehationary->addIndexedContext($mockContext);
     }
