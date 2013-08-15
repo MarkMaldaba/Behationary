@@ -1,6 +1,7 @@
 {
-    "name": "mead_steve/behationary",
-    "description": "Description page for behat contexts",
+    "name": "mead-steve/behationary",
+    "description": "Interactive dictionary for Behat steps defined in multiple contexts.",
+    "license": "MIT",
     "minimum-stability": "dev",
     "authors": [
         {
