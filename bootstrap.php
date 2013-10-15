@@ -1,5 +1,5 @@
 <?php
-include_once 'vendor/Autoload.php';
+include_once 'vendor/autoload.php';
 
 include_once 'MeadSteve/Behationary/Behationary.php';
 include_once 'MeadSteve/Behationary/IndexedContext.php';
