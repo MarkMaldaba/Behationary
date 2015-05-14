@@ -1,23 +1,18 @@
 <?php
 require_once __DIR__ . "/../bootstrap.php";
 $configPath = __DIR__ . "/../config.php";
-if (file_exists($configPath)) {
-    include_once $configPath;
-}
 
 $app = new Bullet\App();
 $request = new Bullet\Request();
 
 // 'steps' subdirectory
-$app->path('steps', function($request) use($app) {
+$app->path('steps', function($request) use($app, $configPath) {
     $behationary = new \MeadSteve\Behationary\Behationary();
-    // If a get contexts functions exists (should have been defined in the
-    // config file. Then call this as it will return all the contexts that
-    // need testing.
-    if (function_exists('\Behationary\getContexts')) {
-        $contexts = \Behationary\getContexts();
-        $behationary->addContexts($contexts);
-    }
+	$config = new \MeadSteve\Behationary\Config($configPath);
+
+	// Add contexts defined in the config (if there are any).
+    $contexts = $config->getContexts();
+    $behationary->addContexts($contexts);
 
     // GetAll
     $app->get(function() use ($behationary) {
