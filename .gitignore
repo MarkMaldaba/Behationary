@@ -2,4 +2,4 @@
 /vendor/
 composer.lock
 .htaccess
-config.php
+/config.php
