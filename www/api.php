@@ -10,6 +10,8 @@ $app->param('slug', function($request, $projectId) use($app) {
 		return;
 	}
 
+	\MeadSteve\Behationary\Config::selectProject($projectId);
+
 	$app->path('steps', function($request) use($app) {
 		$behationary = new \MeadSteve\Behationary\Behationary();
 		$config = \MeadSteve\Behationary\Config::get();
