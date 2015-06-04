@@ -6,6 +6,7 @@ class Config {
 
 	protected static $_singletonInstance;
 	protected static $_singletonConfigFile;
+	protected static $_selectedProject = "default";
 
 	protected $_configFile;
 
@@ -32,6 +33,56 @@ class Config {
 		}
 
 		return self::$_singletonInstance;
+	}
+
+/////////////////////////////////////////////////////////////
+// PROJECTS
+
+/**
+ * getProjects()
+ * Returns an array containing all projects defined on the system.
+ * The key is the internal project identifier, and the value is the display name.
+ * Currently, there is either zero or one project defined, but I plan to add support
+ * for multiple projects soon.
+ */
+	public static function getProjects()
+	{
+		$config = self::get();
+
+		if ($config->isValid()) {
+			return array('default' => "Default Project");
+		}
+		else {
+			return array();
+		}
+	}
+
+	public static function projectExists($projectId)
+	{
+		$projectId = strtolower($projectId);
+		$arrProjects = self::get()->getProjects();
+
+		if (isset($arrProjects[$projectId])) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	public static function selectProject($projectId)
+	{
+		if (!self::projectExists($projectId)) {
+			$errorMsg = "'" . $projectId . "' is not a valid project";
+            throw new \InvalidArgumentException($errorMsg);
+		}
+
+		self::$_selectedProject = strtolower($projectId);
+	}
+
+	public static function getSelectedProject()
+	{
+		return self::$_selectedProject;
 	}
 
 /////////////////////////////////////////////////////////////
