@@ -1,14 +1,12 @@
 <?php
 require_once __DIR__ . "/../bootstrap.php";
-$configPath = __DIR__ . "/../config.php";
-
 $app = new Bullet\App();
 $request = new Bullet\Request();
 
 // 'steps' subdirectory
-$app->path('steps', function($request) use($app, $configPath) {
+$app->path('steps', function($request) use($app) {
     $behationary = new \MeadSteve\Behationary\Behationary();
-	$config = new \MeadSteve\Behationary\Config($configPath);
+	$config = \MeadSteve\Behationary\Config::get();
 
 	// Add contexts defined in the config (if there are any).
     $contexts = $config->getContexts();

@@ -4,9 +4,31 @@ namespace MeadSteve\Behationary;
 
 class Config {
 
+	protected static $_singletonInstance;
+	protected static $_singletonConfigFile;
+
 	protected $_configFile;
 
 	protected $_contexts;
+
+	public static function setPath($configFile) {
+		if ($configFile != self::$_singletonConfigFile) {
+			self::$_singletonConfigFile = $configFile;
+			self::$_singletonInstance = null;
+		}
+	}
+
+	public static function getPath() {
+		return self::$_singletonConfigFile;
+	}
+
+	public static function get() {
+		if (!isset(self::$_singletonInstance)) {
+			self::$_singletonInstance = new self(self::getPath());
+		}
+
+		return self::$_singletonInstance;
+	}
 
     public function __construct($configFile = "")
     {
