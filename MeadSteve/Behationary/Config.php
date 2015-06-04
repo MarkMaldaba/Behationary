@@ -10,6 +10,7 @@ class Config {
 	protected $_configFile;
 
 	protected $_contexts;
+	protected $_behatRootPath = "";
 
 	public static function setPath($configFile) {
 		if ($configFile != self::$_singletonConfigFile) {
@@ -42,6 +43,12 @@ class Config {
 			&& is_file($this->_configFile) && is_readable($this->_configFile))
 		{
 			require_once($this->_configFile);
+
+			// Root path to the Behat install folder.  This will be used as the
+			// path for the autoloader and for 
+			if (isset($behatRootPath)) {
+				$this->_behatRootPath = (string) $behatRootPath;
+			}
 		}
 	}
 
@@ -57,6 +64,11 @@ class Config {
 		}
 
 		return $this->_contexts;
+	}
+
+	public function getBehatRootPath()
+	{
+		return $this->_behatRootPath;
 	}
 
 }
