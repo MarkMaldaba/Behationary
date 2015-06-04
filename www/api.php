@@ -4,7 +4,7 @@ $app = new Bullet\App();
 $request = new Bullet\Request();
 
 // 'steps' subdirectory
-$app->param('string', function($request, $projectId) use($app) {
+$app->param('slug', function($request, $projectId) use($app) {
 	$app->path('steps', function($request) use($app) {
 		$behationary = new \MeadSteve\Behationary\Behationary();
 		$config = \MeadSteve\Behationary\Config::get();
