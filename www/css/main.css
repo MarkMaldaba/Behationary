@@ -21,6 +21,26 @@ textarea {
 body {
     font-size: 1em;
     line-height: 1.4;
+	margin: 1em;
+}
+
+table {
+	border-collapse: collapse;
+	margin: 1em 0;
+	width: 100%;
+}
+
+table, td, th {
+	border: 1px solid #D0D0D0;
+}
+
+td, th {
+	padding: 0.2em 0.4em;
+}
+
+th {
+	background-color: #FFFFD0;
+	text-align: left;
 }
 
 /*
