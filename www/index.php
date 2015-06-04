@@ -20,25 +20,25 @@
 
         <!-- Page Content -->
         <h1>Behationary</h1>
-        <input data-bind="value: filterTerm,
-                          valueUpdate: 'afterkeydown'"
-        />
+
+        <input data-bind="value: filterTerm, valueUpdate: 'afterkeydown'" />
+
         <table>
-        <thead>
-            <tr>
-                <th>Step</th>
-                <th>Function</th>
-                <th>Line Number</th>
-            </tr>
-        </thead>
-        <tbody data-bind="foreach: formattedSteps">
-            <tr>
-                <td data-bind="html: step"></td>
-                <td data-bind="html: method"></td>
-                <td data-bind="html: lineNumber"></td>
-            </tr>
-        </tbody>
-    </table>
+			<thead>
+				<tr>
+					<th>Step</th>
+					<th>Function</th>
+					<th>Line Number</th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: formattedSteps">
+				<tr>
+					<td data-bind="html: step"></td>
+					<td data-bind="html: method"></td>
+					<td data-bind="html: lineNumber"></td>
+				</tr>
+			</tbody>
+		</table>
 
         <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
