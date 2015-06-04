@@ -5,6 +5,11 @@ $request = new Bullet\Request();
 
 // 'steps' subdirectory
 $app->param('slug', function($request, $projectId) use($app) {
+	if (!\MeadSteve\Behationary\Config::projectExists($projectId)) {
+		throw new InvalidArgumentException("Unrecognised project: " . $projectId);
+		return;
+	}
+
 	$app->path('steps', function($request) use($app) {
 		$behationary = new \MeadSteve\Behationary\Behationary();
 		$config = \MeadSteve\Behationary\Config::get();
