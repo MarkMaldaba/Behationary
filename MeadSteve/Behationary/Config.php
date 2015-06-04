@@ -12,6 +12,9 @@ class Config {
 	protected $_contexts;
 	protected $_behatRootPath = "";
 
+/////////////////////////////////////////////////////////////
+// FACTORY FUNCTIONS/SINGLETON CONFIGURATION
+
 	public static function setPath($configFile) {
 		if ($configFile != self::$_singletonConfigFile) {
 			self::$_singletonConfigFile = $configFile;
@@ -31,11 +34,17 @@ class Config {
 		return self::$_singletonInstance;
 	}
 
+/////////////////////////////////////////////////////////////
+// CONSTRUCTOR
+
     public function __construct($configFile = "")
     {
 		$this->_configFile = $configFile;
 		$this->_loadConfigFile();
     }
+
+/////////////////////////////////////////////////////////////
+// CONFIG FILE READING/PARSING
 
 	public function hasValidConfig()
 	{
@@ -62,6 +71,14 @@ class Config {
 		}
 	}
 
+/////////////////////////////////////////////////////////////
+// CONFIGURATION SETTINGS
+
+	public function getBehatRootPath()
+	{
+		return $this->_behatRootPath;
+	}
+
 	public function getContexts()
 	{
 		if (!is_array($this->_contexts)) {
@@ -74,11 +91,6 @@ class Config {
 		}
 
 		return $this->_contexts;
-	}
-
-	public function getBehatRootPath()
-	{
-		return $this->_behatRootPath;
 	}
 
 }
