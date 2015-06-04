@@ -6,7 +6,7 @@ class Config {
 
 	protected $_configFile;
 
-	protected $_contexts = array();
+	protected $_contexts;
 
     public function __construct($configFile = "")
     {
@@ -21,14 +21,19 @@ class Config {
 		{
 			require_once($this->_configFile);
 		}
-
-		if (function_exists('\Behationary\getContexts')) {
-			$this->_contexts = \Behationary\getContexts();
-		}
 	}
 
 	public function getContexts()
 	{
+		if (!is_array($this->_contexts)) {
+			if (function_exists('\Behationary\getContexts')) {
+				$this->_contexts = \Behationary\getContexts();
+			}
+
+			if (!is_array($this->_contexts))
+				$this->_contexts = array();
+		}
+
 		return $this->_contexts;
 	}
 
