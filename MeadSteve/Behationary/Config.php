@@ -6,7 +6,7 @@ class Config {
 
 	protected static $_singletonInstance;
 	protected static $_singletonConfigFile;
-	protected static $_selectedProject = "default";
+	protected static $_selectedProject = "";
 
 	protected $_configFile;
 
@@ -83,7 +83,22 @@ class Config {
 
 	public static function getSelectedProject()
 	{
-		return self::$_selectedProject;
+		// If no project is selected, return the first key in the projects array.
+		// If no projects are defined, and empty string is returned.
+		if (self::$_selectedProject == "") {
+			$arrProjects = self::getProjects();
+			if (count($arrProjects) > 0) {
+				reset($arrProjects);
+				return key($arrProjects);
+			}
+			else {
+				return "";
+			}
+		}
+		// Otherwise return the selected project.
+		else {
+			return self::$_selectedProject;
+		}
 	}
 
 /////////////////////////////////////////////////////////////
