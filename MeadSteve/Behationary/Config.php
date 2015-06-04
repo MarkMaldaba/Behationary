@@ -12,6 +12,7 @@ class Config {
 
 	protected $_contexts;
 	protected $_behatRootPath = "";
+	protected $_projectName = "Default Project";
 
 /////////////////////////////////////////////////////////////
 // FACTORY FUNCTIONS/SINGLETON CONFIGURATION
@@ -50,7 +51,7 @@ class Config {
 		$config = self::get();
 
 		if ($config->isValid()) {
-			return array('default' => "Default Project");
+			return array('default' => $config->getProjectName());
 		}
 		else {
 			return array();
@@ -119,6 +120,12 @@ class Config {
 			if (isset($behatRootPath)) {
 				$this->_behatRootPath = (string) $behatRootPath;
 			}
+
+			// Project name is optionally, but may be set in the config file, in
+			// which case it will be displayed in the UI.
+			if (isset($projectName) && trim($projectName) != "") {
+				$this->_projectName = trim($projectName);
+			}
 		}
 	}
 
@@ -128,6 +135,11 @@ class Config {
 	public function getBehatRootPath()
 	{
 		return $this->_behatRootPath;
+	}
+
+	public function getProjectName()
+	{
+		return $this->_projectName;
 	}
 
 	public function getContexts()

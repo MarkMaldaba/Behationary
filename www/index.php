@@ -14,6 +14,8 @@ elseif (count($arrProjects) == 0) {
 				  . "project defintions.";
 }
 
+$projectName = $config->getProjectName();
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -38,6 +40,7 @@ elseif (count($arrProjects) == 0) {
         <!-- Page Content -->
 
         <h1>Behationary</h1>
+		<h2 id="ProjectName"><?php print(htmlspecialchars($projectName)); ?></h2>
 
 	<?php
 	if ($errorMessage) {

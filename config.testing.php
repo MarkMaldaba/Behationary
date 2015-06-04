@@ -20,6 +20,8 @@ namespace Behationary;
 // Only required if Behat not present in the vendor directory.
 // $behatRootPath = "/path/to/behat";
 
+$projectName = "Behationary FakeContext";
+
 function getContexts() {
 
 	$BasePath = dirname(__FILE__);
