@@ -40,7 +40,6 @@ $projectName = $config->getProjectName();
         <!-- Page Content -->
 
         <h1>Behationary</h1>
-		<h2 id="ProjectName"><?php print(htmlspecialchars($projectName)); ?></h2>
 
 	<?php
 	if ($errorMessage) {
@@ -51,6 +50,7 @@ $projectName = $config->getProjectName();
 	}
 	else {
 	?>
+		<h2 id="ProjectName"><?php print(htmlspecialchars($projectName)); ?></h2>
 
         <input data-bind="value: filterTerm, valueUpdate: 'afterkeydown'" />
 
