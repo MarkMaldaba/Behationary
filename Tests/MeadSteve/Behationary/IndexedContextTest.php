@@ -41,7 +41,7 @@ class IndexedContextTest
     function testGetFileRawSentences_ReturnsCorrectNumber()
     {
         $actualSentences = $this->testIndexedContext->getFileRawSentences();
-        // There should be 1 @Then in the file wiich should be returned.
+        // There should be 1 @Then in the file which should be returned.
         $this->assertCount(2, $actualSentences);
     }
 
