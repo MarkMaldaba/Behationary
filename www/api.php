@@ -4,37 +4,39 @@ $app = new Bullet\App();
 $request = new Bullet\Request();
 
 // 'steps' subdirectory
-$app->path('steps', function($request) use($app) {
-    $behationary = new \MeadSteve\Behationary\Behationary();
-	$config = \MeadSteve\Behationary\Config::get();
+$app->param('string', function($request, $projectId) use($app) {
+	$app->path('steps', function($request) use($app) {
+		$behationary = new \MeadSteve\Behationary\Behationary();
+		$config = \MeadSteve\Behationary\Config::get();
 
-	// Add contexts defined in the config (if there are any).
-    $contexts = $config->getContexts();
-    $behationary->addContexts($contexts);
+		// Add contexts defined in the config (if there are any).
+		$contexts = $config->getContexts();
+		$behationary->addContexts($contexts);
 
-    // GetAll
-    $app->get(function() use ($behationary) {
-        return getJsonReadySteps($behationary->getAllSteps());
-    });
+		// GetAll
+		$app->get(function() use ($behationary) {
+			return getJsonReadySteps($behationary->getAllSteps());
+		});
 
-    // Filter
-    $app->path('query', function($request) use($app, $behationary) {
-        $app->get(function() use ($behationary, $request) {
-            $searchTerm = $request->query('term', "");
-            $steps = $behationary->getAllSteps();
-            $steps = getJsonReadySteps($steps);
-            if ($searchTerm !== "") {
-                $steps = array_values(array_filter(
-                    $steps,
-                    getStepFilterer($searchTerm)
-                ));
-                return $steps;
-            }
-            else {
-                return $steps;
-            }
-        });
-    });
+		// Filter
+		$app->path('query', function($request) use($app, $behationary) {
+			$app->get(function() use ($behationary, $request) {
+				$searchTerm = $request->query('term', "");
+				$steps = $behationary->getAllSteps();
+				$steps = getJsonReadySteps($steps);
+				if ($searchTerm !== "") {
+					$steps = array_values(array_filter(
+						$steps,
+						getStepFilterer($searchTerm)
+					));
+					return $steps;
+				}
+				else {
+					return $steps;
+				}
+			});
+		});
+	});
 });
 
 $app->on('Exception',

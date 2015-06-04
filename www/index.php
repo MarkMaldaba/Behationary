@@ -14,7 +14,20 @@ elseif (count($arrProjects) == 0) {
 				  . "project defintions.";
 }
 
-$projectName = $config->getProjectName();
+if (count($arrProjects) <= 1) {
+	$projectName = $config->getProjectName();
+	$projectId = \MeadSteve\Behationary\Config::getSelectedProject();
+}
+else {
+	$projectName = "";
+	$projectId = "";
+
+	$projectOptionsHTML = "";
+	foreach ($arrProjects as $project => $displayName) {
+		$projectOptionsHTML .= '<option value="' . htmlspecialchars($project) . '">'
+							 . htmlspecialchars($displayName) . '</option>';
+	}
+}
 
 ?>
 <!DOCTYPE html>
@@ -50,7 +63,26 @@ $projectName = $config->getProjectName();
 	}
 	else {
 	?>
-		<h2 id="ProjectName"><?php print(htmlspecialchars($projectName)); ?></h2>
+		<h2 id="Project">
+		<?php
+		if ($projectName) {
+		?>
+			<?php print(htmlspecialchars($projectName)); ?>
+			<input type="hidden" id="SelectedProject"
+				   value="<?php print(htmlspecialchars($projectId)); ?>"
+				   data-bind="value: selectedProject">
+		<?php
+		}
+		else {
+		?>
+			Select Project:
+			<select id="SelectedProject" data-bind="value: selectedProject">
+				<?php print($projectOptionsHTML); ?>
+			</select>
+		<?php
+		}
+		?>
+		</h2>
 
         <input data-bind="value: filterTerm, valueUpdate: 'afterkeydown'" />
 
