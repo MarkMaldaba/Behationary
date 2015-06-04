@@ -46,7 +46,7 @@ class Config {
 /////////////////////////////////////////////////////////////
 // CONFIG FILE READING/PARSING
 
-	public function hasValidConfig()
+	public function isValid()
 	{
 		if ($this->_configFile != "" && $this->_configFile != null
 			&& is_file($this->_configFile) && is_readable($this->_configFile))
@@ -60,7 +60,7 @@ class Config {
 
 	protected function _loadConfigFile()
 	{
-		if ($this->hasValidConfig()) {
+		if ($this->isValid()) {
 			require_once($this->_configFile);
 
 			// Root path to the Behat install folder.  This will be used as the
