@@ -1,3 +1,20 @@
+<?php
+require_once __DIR__ . "/../bootstrap.php";
+
+$config = \MeadSteve\Behationary\Config::get();
+$arrProjects = \MeadSteve\Behationary\Config::getProjects();
+
+$errorMessage = "";
+if (!$config->isValid()) {
+	$errorMessage = "<code>config.php</code> could not be found, or is not "
+				  . "readable.";
+}
+elseif (count($arrProjects) == 0) {
+	$errorMessage = "<code>config.php</code> exists, but doesn't include any valid "
+				  . "project defintions.";
+}
+
+?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -20,6 +37,16 @@
 
         <!-- Page Content -->
         <h1>Behationary</h1>
+
+	<?php
+	if ($errorMessage) {
+	?>
+			<p>No projects defined.</p>
+			<p><?php print($errorMessage); ?></p>
+	<?php
+	}
+	else {
+	?>
 
         <input data-bind="value: filterTerm, valueUpdate: 'afterkeydown'" />
 
@@ -44,5 +71,10 @@
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
         <script src="js/vendor/knockout-2.2.1.js"></script>
         <script src="js/MainViewModel.js"></script>
+
+	<?php
+	}
+	?>
+
     </body>
 </html>
