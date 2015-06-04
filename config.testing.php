@@ -2,7 +2,8 @@
 /******************************************************************************
  * This is an example config file, which loads the test context that
  * ships with Behationary.  You can use it to test your installation is
- * working properly, or to run Behationary's own Behat tests.
+ * working properly, or to run the Behationary's unit tests (which require
+ * the FakeContext class to be loaded).
  *
  * To use, rename to config.php.
  *
