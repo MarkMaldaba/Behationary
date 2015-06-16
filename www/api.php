@@ -1,47 +1,49 @@
 <?php
 require_once __DIR__ . "/../bootstrap.php";
-$configPath = __DIR__ . "/../config.php";
-if (file_exists($configPath)) {
-    include_once $configPath;
-}
-
 $app = new Bullet\App();
 $request = new Bullet\Request();
 
 // 'steps' subdirectory
-$app->path('steps', function($request) use($app) {
-    $behationary = new \MeadSteve\Behationary\Behationary();
-    // If a get contexts functions exists (should have been defined in the
-    // config file. Then call this as it will return all the contexts that
-    // need testing.
-    if (function_exists('\Behationary\getContexts')) {
-        $contexts = \Behationary\getContexts();
-        $behationary->addContexts($contexts);
-    }
+$app->param('slug', function($request, $projectId) use($app) {
+	if (!\MeadSteve\Behationary\Config::projectExists($projectId)) {
+		throw new InvalidArgumentException("Unrecognised project: " . $projectId);
+		return;
+	}
 
-    // GetAll
-    $app->get(function() use ($behationary) {
-        return getJsonReadySteps($behationary->getAllSteps());
-    });
+	\MeadSteve\Behationary\Config::selectProject($projectId);
 
-    // Filter
-    $app->path('query', function($request) use($app, $behationary) {
-        $app->get(function() use ($behationary, $request) {
-            $searchTerm = $request->query('term', "");
-            $steps = $behationary->getAllSteps();
-            $steps = getJsonReadySteps($steps);
-            if ($searchTerm !== "") {
-                $steps = array_values(array_filter(
-                    $steps,
-                    getStepFilterer($searchTerm)
-                ));
-                return $steps;
-            }
-            else {
-                return $steps;
-            }
-        });
-    });
+	$app->path('steps', function($request) use($app) {
+		$behationary = new \MeadSteve\Behationary\Behationary();
+		$config = \MeadSteve\Behationary\Config::get();
+
+		// Add contexts defined in the config (if there are any).
+		$contexts = $config->getContexts();
+		$behationary->addContexts($contexts);
+
+		// GetAll
+		$app->get(function() use ($behationary) {
+			return getJsonReadySteps($behationary->getAllSteps());
+		});
+
+		// Filter
+		$app->path('query', function($request) use($app, $behationary) {
+			$app->get(function() use ($behationary, $request) {
+				$searchTerm = $request->query('term', "");
+				$steps = $behationary->getAllSteps();
+				$steps = getJsonReadySteps($steps);
+				if ($searchTerm !== "") {
+					$steps = array_values(array_filter(
+						$steps,
+						getStepFilterer($searchTerm)
+					));
+					return $steps;
+				}
+				else {
+					return $steps;
+				}
+			});
+		});
+	});
 });
 
 $app->on('Exception',

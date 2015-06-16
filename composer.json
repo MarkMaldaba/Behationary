@@ -10,7 +10,10 @@
         }
     ],
     "require": {
-        "behat/behat": "v2.4.5",
+        "php": ">=5.3",
         "vlucas/bulletphp": "1.2.0"
-    }
+    },
+    "require-dev": {
+        "behat/behat": "v2.4.5"
+	}
 }

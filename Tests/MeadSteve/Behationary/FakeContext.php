@@ -8,7 +8,7 @@ class FakeContext
 {
 
     /**
-     * @Then /^I should this method with arg "([^"]*)"$/
+     * @Then /^I should see this method with arg "([^"]*)"$/
      */
     public function iShouldSeeThisMethodWithArg($Arg)
     {

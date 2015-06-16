@@ -2,9 +2,9 @@ function MainViewModel() {
     var self = this;
 
     // private functions
-    var filterList = function filterList(value) {
+    var filterList = function filterList(value, selectedProject) {
         $.ajax({
-            url: "api/steps/query",
+            url: "api/" + selectedProject + "/steps/query",
             data: { term: value}
         }).done( function(retrievedSteps) {
             self.steps(retrievedSteps);
@@ -24,8 +24,13 @@ function MainViewModel() {
 
     // Editable data
     self.filterTerm = ko.observable("");
+	self.selectedProject = ko.observable($("#SelectedProject").val());
+
     self.filterTerm.subscribe(function(newValue) {
-        filterList(newValue);
+        filterList(newValue, self.selectedProject());
+    });
+    self.selectedProject.subscribe(function(newValue) {
+        filterList(self.filterTerm(), newValue);
     });
 
     self.steps = ko.observableArray([]);
@@ -44,7 +49,7 @@ function MainViewModel() {
         return formattedSteps;
     });
 
-    filterList(self.filterTerm());
+    filterList(self.filterTerm(), self.selectedProject());
 }
 ko.applyBindings(new MainViewModel());
 
